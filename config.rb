@@ -4,7 +4,8 @@ def loadConfig()
 	port = '8080'
 	documentRoot = 'htdocs'
 	indexes = [ 'index.html', 'index.htm' ]
+	mimeFile = 'mime.types'
 
-	return [ hostname, port, documentRoot, indexes ]
+	return [ hostname, port, documentRoot, indexes, mimeFile ]
 end
 

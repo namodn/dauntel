@@ -6,7 +6,7 @@ class WebServer
 def initialize
         require 'config.rb'
 	@version = '0.2'
-	@hostname, @port, @documentRoot, @indexes = loadConfig()
+	@hostname, @port, @documentRoot, @indexes, @mimeFile= loadConfig()
 end
 
 def config(key)
@@ -146,7 +146,7 @@ def serve(url, status, session)
 	# session object to give it to the user.
 	#
 	elsif status == 'ok'
-		session.print header('HTTP 1.1 500/OK','text/html')
+		setHeader(session, "#{@documentRoot}/#{url}")
 		session.print getURL(url)
 		logger('access', "500 OK #{url} from #{ip_addr}")
 
@@ -159,6 +159,48 @@ def serve(url, status, session)
 
 end
 
+#
+# Prints the header for the file based on it's mime type
+#
+def setHeader(session, filename)
+	mimeType = "text/html"
+	fileExt = getFileExtention(filename)
+
+	file = open(@mimeFile, "r+")
+
+	begin
+
+		file.each_line do |line|
+			if line =~ /^$/
+				next
+			elsif line =~ /^\w*\#/
+				next
+			end
+
+			lineArray = line.split
+			type = lineArray.shift
+
+			lineArray.each do |entry|
+				if fileExt == entry
+					mimeType = type
+					break
+				end
+			end
+
+		end
+	
+	ensure
+		file.close
+	end
+
+	logger('debug', "mime type for #{filename} is #{mimeType}")
+	session.print header('HTTP 1.1 500/OK', mimeType)
+end
+
+def getFileExtention(filename)
+	fileElements = filename.split(/\./)
+	return fileElements[fileElements.size - 1] 
+end
 
 end  # end class WebServer
 

@@ -2,8 +2,9 @@
 #
 # dauntel - Web Server written in Ruby
 #
-# Copyright &copy 2002 Rob Helmer <robert@namodn.com>, you may accept it under 
-# the terms of the GPL ( http://gnu.org/licenses/gpl.txt )
+# Copyright &copy 2002 Rob Helmer <robert@namodn.com> and 
+# Nick Jennings <nkj@namodn.com>, you may accept it under the terms of 
+# the GPL ( http://gnu.org/licenses/gpl.txt )
 #
 # This is just a little program I wrote to start learning Ruby, it comes
 # with NO WARRANTY, expressed or implied. 
@@ -21,7 +22,7 @@
 require 'socket'
 require 'lib/webserver.rb'
 ws = WebServer.new()
-tcp = TCPServer.new( ws.config('hostname'), ws.config('port'))
+tcp = TCPServer.new(ws.config('hostname'), ws.config('port'))
 
 ws.logger("started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
 

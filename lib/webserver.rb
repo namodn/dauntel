@@ -41,10 +41,7 @@ end
 # getURL method - this handles incoming GET requests
 #
 def getURL(url)
-	if fileReader(url)
-		result = fileReader(url)
-		return result
-	end
+	return fileReader(url)
 end
 
 #

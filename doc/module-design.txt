@@ -10,7 +10,7 @@ Module Type: Content
      - module 'dir' would register itself as a content handler for '/'.
 
  * When webserver.rb is trying to get the requested file, it will check with 
-   the content hanlder. If no content type is registered with the file in 
+   the content handler. If no content type is registered with the file in 
    question it will pass it on to mime types, and display the file.
 
  * If the content type _is_ found for the filename in question, the module 

@@ -114,17 +114,12 @@ end
 #
 # serve method - this handles interaction with the user agent
 #
-def serve(url,session)
+def serve(url, status, session)
 
 	#
 	# If the word "notFound" was passed, we don't have it
 	#
-	if url == 'notFound'
-		#
-		# get requested URL
-		#
-	        badurl = session.gets.split[1]
-
+	if status == 'notFound'
 		session.print header('HTTP 1.1 404/NOT FOUND','text/html')
 
 		if File.exists?"#{@documentRoot}/missing.html" 
@@ -132,26 +127,33 @@ def serve(url,session)
 		else
 			session.print '<html><head><title>404 Not Found</title>'
 			session.print '</head><body><h1>Not Found!</h1>'
-			session.print "<p>The URL #{badurl} was not found on this server.</p>"
+			session.print "<p>The URL #{url} was not found on this server.</p>"
 			session.print "<hr /><address>dante http server v#{@version} - #{@hostname} #{@port}</address></body></html>"
 		end
 
 	#
 	# If the word "notImplemented" was passed, we can't do it
 	#
-	elsif url == 'notImplemented'
+	elsif status == 'notImplemented'
 		session.print header('HTTP 1.1 501/NOT IMPLEMENTED','text/html')
 		session.print 'Sorry, that method is not implemented on this server.'
 	#
 	#
-	# If url is anything else, we've got it. Use our reference to the
+	# If status is ok, we've got it. Use our reference to the
 	# session object to give it to the user.
 	#
-	else
+	elsif status == 'ok'
 		session.print header('HTTP 1.1 500/OK','text/html')
 		session.print getURL(url)
+		logger("Returned #{url}")
+
+	#
+	# If status is unrecognized, log an error and ignore do nothing
+	#
+	else
+		logger("status is unrecognized : #{status}")
 	end
-	logger("Returned #{url}")
+
 end
 
 

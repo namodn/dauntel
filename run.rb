@@ -51,7 +51,7 @@ while (session = tcp.accept)
 	#
 
 	if ( request[1] =~ /\/\.\./ ) || ( request[1] =~ /\.\.\// )
-		ws.serve('notFound',session)
+		ws.serve(url, 'notFound',session)
 		session.close
 		next
 	end
@@ -73,20 +73,20 @@ while (session = tcp.accept)
 		# then we know how to handle it
 		#
 		if ws.getURL(url) 
-			ws.serve(url,session)
+			ws.serve(url, 'ok', session)
 		else
 		#
 		# This isn't an URL that we can handle, return a "file
 		# not found" message
 		#
-			ws.serve('notFound',session)
+			ws.serve(url, 'notFound', session)
 		end
 	else
 		#
 		# Only the GET method is supported, anything else
 		# is not implemented
 		#
-			ws.serve('notImplemented',session)
+			ws.serve(url, 'notImplemented', session)
 	end
 	session.close
 end

@@ -4,9 +4,52 @@ class WebServer
 # config method, define all configurable settings
 #
 def initialize
-        require 'etc/config.rb'
+	configFile = 'etc/dauntel.cfg'
 	@version = '0.2'
-	@hostname, @port, @documentRoot, @indexes, @mimeFile, @accessLog, @errorLog, @debugLog = loadConfig()
+	loadConfig(configFile)
+end
+
+def loadConfig(configFile)
+	@hostname, @port, @documentRoot, @indexFiles, @mimeFile, 
+	@accessLog, @errorLog, @debugLog = 
+	'0', '8080', 'htdocs/', ['index.html', 'index.htm'], 'etc/mime.types', 
+	'log/access.log', 'log/error.log', 'log/debug.log'
+
+	config = open(configFile, "r+")
+
+	begin
+		config.each_line do |line|
+			if line =~ /^$/ || line =~ /^\W*\#/
+				next
+			end
+
+			line = line.chomp
+
+			key, value = line.split('\W+', 2)
+
+			print "key #{key}, value -#{value}-\n"
+			if key == 'hostname'
+				@hostname = value
+			elsif key == 'port'
+				@port = value
+			elsif key == 'documentRoot'
+				@documentRoot = value
+			elsif key == 'indexFiles'
+				@indexFiles = value.split(',')
+			elsif key == 'mimeFile'
+				@mimeFile = value
+			elsif key == 'accessLog'
+				@accessLog = value
+			elsif key == 'errorLog'
+				@errorLog = value
+			elsif key == 'debugLog'
+				@debugLog = value
+			end
+
+		end
+	ensure
+		config.close
+	end	
 end
 
 def config(key)
@@ -16,8 +59,10 @@ def config(key)
 		return @port
 	elsif key == 'documentRoot'
 		return @documentRoot
-	elsif key == 'indexes'
-		return @indexes
+	elsif key == 'indexFiles'
+		return @indexFiles
+	elsif key == 'mimeFile'
+		return @mimeFile
 	elsif key == 'accessLog'
 		return @accessLog
 	elsif key == 'errorLog'
@@ -88,7 +133,7 @@ def fileReader(filename)
 
 			foundIndex = ''
 
-			@indexes.each do |fileEntry|
+			@indexFiles.each do |fileEntry|
 
 				if (File.exists?"#{fullFilename}/#{fileEntry}")
 					foundIndex = fileEntry

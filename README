@@ -1,4 +1,4 @@
-dauntel v0.3
+Dauntel v0.3
 -------------------------------
 
 This release is rather barebones. A list of items to get
@@ -7,32 +7,32 @@ to 1.0 is in doc/TODO
 Make sure you have Ruby installed ( I'm using v1.4.3 ) and start
 the server using the "run.rb" script.
 
-Configuration takes in etc/config.rb
+Configuration takes place in etc/config.rb
 
-It supports the following HTTP request :
+Dauntel supports the following HTTP request :
 
 GET 
 
-It supports the following HTTP responses :
+And the following HTTP responses :
 
 404/NOT FOUND
 500/OK
 501/NOT IMPLEMENTED
 
-dauntel supports mime types, and comes with a mime.types file
+Dauntel supports mime types, and comes with a mime.types file
 in etc/mime.types ( the location of this file is configurable
 in etc/config.rb ).
 
 If the URL the user is attempting to get is a directory within
-the defined docroot, dauntel will look for any of a number
+the defined docroot, Dauntel will look for any of a number
 of index files, set in etc/config.rb
 
-If a file is found, dauntel sends back the appropriate content-type
+If a file is found, Dauntel sends back the appropriate content-type
 based on the extension ( mime-type ) of the file, followed by the 
 content of the file.
 
 If the directory or filename is not found, or if no index file
-exists dauntel will send back :
+exists Dauntel will send back :
 
 --
 
@@ -43,7 +43,7 @@ Sorry, that file was not found on this server.
 
 --
 
-Finally, if the user attempts to send any request except GET, dauntel will
+Finally, if the user attempts to send any request except GET, Dauntel will
 send :
 
 --

@@ -5,7 +5,7 @@ class WebServer
 #
 def initialize
         require 'config.rb'
-	@hostname, @port, @documentRoot = loadConfig()
+	@hostname, @port, @documentRoot, @indexes = loadConfig()
 end
 
 def config(key)
@@ -15,6 +15,8 @@ def config(key)
 		return @port
 	elsif key == 'documentRoot'
 		return @documentRoot
+	elsif key == 'indexes'
+		return @indexes
 	end
 end
 
@@ -69,11 +71,23 @@ def fileReader(filename)
 		# if it's a directory, look for index.html
 		#
 		elsif fileType == 'directory'
+
+			foundIndex = ''
+
+			@indexes.each do |fileEntry|
+
+				if (File.exists?"#{fullFilename}/#{fileEntry}")
+					foundIndex = fileEntry
+					break
+				end
+
+			end 
+
 			begin
-				file = open("#{fullFilename}/index.html", "r+")
+				file = open("#{fullFilename}/#{foundIndex}", "r+")
 
 			#
-			# Error handling.. if index.html wasn't found, just
+			# Error handling.. if indexes weren't found, just
 			# return nothing
 			#
 			rescue

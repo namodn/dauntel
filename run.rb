@@ -6,8 +6,7 @@
 # Nick Jennings <nkj@namodn.com>, you may accept it under the terms of 
 # the GPL ( http://gnu.org/licenses/gpl.txt )
 #
-# This is just a little program I wrote to start learning Ruby, it comes
-# with NO WARRANTY, expressed or implied. 
+# dauntel comes with NO WARRANTY, expressed or implied. 
 #
 # The performance doesn't seem too bad, but I'd advise against using it
 # in a "production" situation :)
@@ -16,7 +15,7 @@
 # a directory, it must have an index.html or a 404 will be returned.
 #
 #
-# start the server on the defined hostname and port
+# start the server on the defined hostname and port in the config.rb
 #
 
 require 'socket'
@@ -91,3 +90,4 @@ while (session = tcp.accept)
 	end
 	session.close
 end
+

@@ -16,7 +16,7 @@ GET
 And the following HTTP responses :
 
 404/NOT FOUND
-500/OK
+200/OK
 501/NOT IMPLEMENTED
 
 Dauntel supports mime types, and comes with a mime.types file

@@ -49,6 +49,12 @@ while (session = tcp.accept)
 	request = incoming.split
 
 	#
+	# define URL
+	#
+
+	url = request[1]
+
+	#
 	# security check - don't allow ../ tricks
 	#
 

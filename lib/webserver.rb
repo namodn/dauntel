@@ -113,7 +113,8 @@ end
 #
 def serve(url, status, session)
 
-	ip_addr = "test"
+	addr = session.peeraddr
+	ip_addr = addr[3]
 
 	#
 	# If the word "notFound" was passed, we don't have it

@@ -16,15 +16,19 @@
 #
 
 #
-# start the server on the defined hostname and port in the config.rb
+# start the server on the defined hostname and port in the dauntel.cfg
 #
 
 require 'socket'
 require 'lib/webserver.rb'
+require 'lib/config.rb'
+require 'lib/logger.rb'
 ws = WebServer.new()
-tcp = TCPServer.new(ws.config('hostname'), ws.config('port'))
+cfg = Config.new()
+logger = Logger.new()
+tcp = TCPServer.new(cfg.get('hostname'), cfg.get('port'))
 
-ws.logger('debug', "started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
+logger.puts('debug', "started webserver on #{cfg.get('hostname')} port #{cfg.get('port')}")
 
 #
 # This while loop handles incoming HTTP requests from the user agent.
@@ -45,7 +49,7 @@ while (tcp)
 	# Log the whole incoming request
 	#
 
-	ws.logger('debug', "Request: #{incoming}")
+	logger.puts('debug', "Request: #{incoming}")
 
 	#
 	# split incoming by space into request array

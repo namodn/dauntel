@@ -1,78 +1,24 @@
 class WebServer
 
+require 'lib/config.rb'
+
 #
-# config method, define all configurable settings
+# Runs on startup
 #
 def initialize
-	configFile = 'etc/dauntel.cfg'
-	@version = '0.3'
-	loadConfig(configFile)
-end
+	cfg = Config.new()
 
-def loadConfig(configFile)
-	@hostname, @port, @documentRoot, @indexFiles, @mimeFile, 
-	@accessLog, @errorLog, @debugLog, @loadMod = 
-	'0', '8080', 'htdocs/', ['index.html', 'index.htm'], 'etc/mime.types', 
-	'log/access.log', 'log/error.log', 'log/debug.log', []
+	@debugLog = cfg.get('debugLog')
+	@accessLog = cfg.get('accessLog')
+	@errorLog = cfg.get('errorLog')
+	@documentRoot = cfg.get('documentRoot')
+	@indexFiles = cfg.get('indexFiles')
+	@mimeFile = cfg.get('mimeFile')
+	@version = cfg.get('version')
+	@hostname = cfg.get('hostname')
+	@port = cfg.get('port')
 
-	config = open(configFile, "r+")
-
-	begin
-		config.each_line do |line|
-			if line =~ /^$/ || line =~ /^\W*\#/
-				next
-			end
-
-			line = line.chomp
-
-			key, value = line.split('\W+', 2)
-
-			if key == 'hostname'
-				@hostname = value
-			elsif key == 'port'
-				@port = value
-			elsif key == 'documentRoot'
-				@documentRoot = value
-			elsif key == 'indexFiles'
-				@indexFiles = value.split(',')
-			elsif key == 'mimeFile'
-				@mimeFile = value
-			elsif key == 'accessLog'
-				@accessLog = value
-			elsif key == 'errorLog'
-				@errorLog = value
-			elsif key == 'debugLog'
-				@debugLog = value
-			elsif key == 'loadMod'
-				@loadMod = value.split(',')
-			end
-
-		end
-	ensure
-		config.close
-	end	
-end
-
-def config(key)
-	if key == 'hostname'
-		return @hostname
-	elsif key == 'port'
-		return @port
-	elsif key == 'documentRoot'
-		return @documentRoot
-	elsif key == 'indexFiles'
-		return @indexFiles
-	elsif key == 'mimeFile'
-		return @mimeFile
-	elsif key == 'accessLog'
-		return @accessLog
-	elsif key == 'errorLog'
-		return @errorLog
-	elsif key == 'debugLog'
-		return @debugLog
-	elsif key == 'loadMod'
-		return @loadMod
-	end
+	@logger = Logger.new()
 end
 
 #
@@ -92,31 +38,6 @@ def header(errorCode, contentType)
 	result += "Content-type: #{contentType}; charset=iso-8859-1\r\n"
 	result += "\r\n"
 	return result
-end
-
-#
-# logger method - this handles logging incoming HTTP requests
-#
-def logger(severity, log)
-	if severity == 'access'
-		fullFilename = @accessLog
-	elsif severity == 'error'
-		fullFilename = @errorLog
-	elsif severity == 'debug'
-		fullFilename = @debugLog
-	end
-
-	file = open(fullFilename, "a")
-	file.puts "#{log}"
-	file.close
-end
-
-#
-# Save log in common log format
-# http://www.w3.org/Daemon/User/Config/Logging.html#common-logfile-format
-#
-def clf_logger(ip_addr, url)
-	logger('access', "#{ip_addr} - - [DD/MMM/YYYY:HH:MM:SS -0800] \"GET #{url} 200\" \"User Agent\"")
 end
 
 #
@@ -206,7 +127,7 @@ def serve(url, status, session)
 	if status == 'notFound'
 		session.print header('404 NOT FOUND','text/html')
 
-		logger('error', "404 NOT FOUND #{url}, #{ip_addr}")
+		@logger.puts('error', "404 NOT FOUND #{url}, #{ip_addr}")
 
 		if File.exists?"#{@documentRoot}/missing.html" 
 			session.print getURL("/missing.html")
@@ -223,7 +144,7 @@ def serve(url, status, session)
 	elsif status == 'notImplemented'
 		session.print header('501 NOT IMPLEMENTED','text/html')
 		session.print 'Sorry, that method is not implemented on this server.'
-		logger('error', "501 NOT IMPLEMENTED Returned #{url} from #{ip_addr}")
+		@logger.puts('error', "501 NOT IMPLEMENTED Returned #{url} from #{ip_addr}")
 	#
 	#
 	# If status is ok, we've got it. Use our reference to the
@@ -232,13 +153,13 @@ def serve(url, status, session)
 	elsif status == 'ok'
 		setHeader(session, "#{@documentRoot}/#{url}")
 		session.print getURL(url)
-		clf_logger(ip_addr,url)
+		@logger.clf(ip_addr,url)
 
 	#
 	# If status is unrecognized, log an error and ignore do nothing
 	#
 	else
-		logger('error', "status is unrecognized : #{status}")
+		@logger.puts('error', "status is unrecognized : #{status}")
 	end
 
 end
@@ -277,7 +198,7 @@ def setHeader(session, filename)
 		file.close
 	end
 
-	logger('debug', "mime type for #{filename} is #{mimeType}")
+	@logger.puts('debug', "mime type for #{filename} is #{mimeType}")
 	session.print header('200 OK', mimeType)
 end
 

@@ -14,6 +14,7 @@
 # It only supports the GET method and text/html files. If you try to GET
 # a directory, it must have an index.html or a 404 will be returned.
 #
+
 #
 # start the server on the defined hostname and port in the config.rb
 #
@@ -29,7 +30,11 @@ ws.logger('debug', "started webserver on #{ws.config('hostname')} port #{ws.conf
 # This while loop handles incoming HTTP requests from the user agent.
 # The loop is alive as long as we're able to listen..
 #
-while (session = tcp.accept)
+
+while (tcp)
+
+	session = tcp.accept
+
 	#
 	# grab incoming requests into incoming string
 	#

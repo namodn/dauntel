@@ -1,4 +1,5 @@
 *) http 1.1 compliance
+   ( reference - ftp://ftp.isi.edu/in-notes/rfc2616.txt )
 
 *) module architecture ( cgi, auth, etc )
 
@@ -13,4 +14,4 @@
      and spin it off into it's own threads.
 
 *) Common Log Format log files
-
+   ( reference - http://www.w3.org/Daemon/User/Config/Logging.html#common-logfile-format )

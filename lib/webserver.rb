@@ -85,11 +85,11 @@ end
 #
 def logger(severity, log)
 	if severity == 'access'
-		fullFilename = "#{config('accessLog')}"
+		fullFilename = @accessLog
 	elsif severity == 'error'
-		fullFilename = "#{config('errorLog')}"
+		fullFilename = @errorLog
 	elsif severity == 'debug'
-		fullFilename = "#{config('debugLog')}"
+		fullFilename = @debugLog
 	end
 
 	file = open(fullFilename, "a")
@@ -111,7 +111,7 @@ def fileReader(filename)
 	#
 	# put the documentRoot and the filename together
 	#
-	fullFilename = "#{config('documentRoot')}#{filename}"
+	fullFilename = @documentRoot
 
 	begin
 		#

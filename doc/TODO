@@ -1,0 +1,16 @@
+*) http 1.1 compliance
+
+*) module architecture ( cgi, auth, etc )
+
+*) threads 
+     each http process should be a seperate thread.
+
+*) the application ( run.rb ) should be simpler 
+     threading should help.
+     it would be awesome if it was dead simple to just
+     drop dauntel into a ruby app that needed web serving,
+     like an app server. just configure it, instantiate it,
+     and spin it off into it's own threads.
+
+*) Common Log Format log files
+

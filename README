@@ -1,45 +1,37 @@
-dauntel v0.2
+dauntel v0.3
 -------------------------------
 
-Hello,
-
-
-This release is rather barebones, as I'm just using it to learn
-Ruby.
-
-Configuration takes place at the top of lib/webserver.rb, in the
-"config" class.
+This release is rather barebones. A list of items to get
+to 1.0 is in doc/TODO
 
 Make sure you have Ruby installed ( I'm using v1.4.3 ) and start
 the server using the "run.rb" script.
+
+Configuration takes in etc/config.rb
 
 It supports the following HTTP request :
 
 GET 
 
-It supports the following HTTP requests :
+It supports the following HTTP responses :
 
 404/NOT FOUND
 500/OK
 501/NOT IMPLEMENTED
 
-dauntel only supports sending "text/html".
+dauntel supports mime types, and comes with a mime.types file
+in etc/mime.types ( the location of this file is configurable
+in etc/config.rb ).
 
 If the URL the user is attempting to get is a directory within
-the defined docroot, dauntel will look for a file named "index.html".
+the defined docroot, dauntel will look for any of a number
+of index files, set in etc/config.rb
 
-If a file is found, dauntel sends back :
+If a file is found, dauntel sends back the appropriate content-type
+based on the extension ( mime-type ) of the file, followed by the 
+content of the file.
 
---
-
-HTTP 1.1 500/OK 
-Content-type: text/html 
-
---
-
-followed by the content of the file.
-
-If the directory or filename is not found, or if no index.html
+If the directory or filename is not found, or if no index file
 exists dauntel will send back :
 
 --
@@ -68,4 +60,4 @@ That's it for now! :)
 
 
 -------------------------------
-Questions, comments, patches, etc : robert@namodn.com
+Questions, comments, patches, etc : developers@namodn.com

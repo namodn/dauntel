@@ -64,7 +64,7 @@ while (tcp)
 	#
 
 	if ( request[1] =~ /\/\.\./ ) || ( request[1] =~ /\.\.\// )
-		ws.serve(url, 'notFound',session)
+		ws.serve(url, 'notFound', session)
 		session.close
 		next
 	end

@@ -185,7 +185,7 @@ def serve(url, status, session)
 	# If the word "notFound" was passed, we don't have it
 	#
 	if status == 'notFound'
-		session.print header('HTTP 1.1 404/NOT FOUND','text/html')
+		session.print header('404 NOT FOUND','text/html')
 
 		logger('error', "404 NOT FOUND #{url}, #{ip_addr}")
 
@@ -202,7 +202,7 @@ def serve(url, status, session)
 	# If the word "notImplemented" was passed, we can't do it
 	#
 	elsif status == 'notImplemented'
-		session.print header('HTTP 1.1 501/NOT IMPLEMENTED','text/html')
+		session.print header('501 NOT IMPLEMENTED','text/html')
 		session.print 'Sorry, that method is not implemented on this server.'
 		logger('error', "501 NOT IMPLEMENTED Returned #{url} from #{ip_addr}")
 	#
@@ -213,7 +213,7 @@ def serve(url, status, session)
 	elsif status == 'ok'
 		setHeader(session, "#{@documentRoot}/#{url}")
 		session.print getURL(url)
-		logger('access', "500 OK #{url} from #{ip_addr}")
+		logger('access', "200 OK #{url} from #{ip_addr}")
 
 	#
 	# If status is unrecognized, log an error and ignore do nothing
@@ -259,7 +259,7 @@ def setHeader(session, filename)
 	end
 
 	logger('debug', "mime type for #{filename} is #{mimeType}")
-	session.print header('HTTP 1.1 500/OK', mimeType)
+	session.print header('200 OK', mimeType)
 end
 
 def getExtention(filename)

@@ -1,4 +1,4 @@
-Dauntel v0.3
+Dauntel v0.4
 -------------------------------
 
 This release is rather barebones. A list of items to get
@@ -15,9 +15,9 @@ GET
 
 And the following HTTP responses :
 
-404/NOT FOUND
-200/OK
-501/NOT IMPLEMENTED
+404 NOT FOUND
+200 OK
+501 NOT IMPLEMENTED
 
 Dauntel supports mime types, and comes with a mime.types file
 in etc/mime.types ( the location of this file is configurable
@@ -36,7 +36,7 @@ exists Dauntel will send back :
 
 --
 
-HTTP 1.1 404/NOT FOUND
+HTTP/1.1 404 NOT FOUND
 Content-type: text/html
 
 Sorry, that file was not found on this server.
@@ -48,7 +48,7 @@ send :
 
 --
 
-HTTP/1.1 HTTP 1.1 501/NOT IMPLEMENTED
+HTTP/1.1 501 NOT IMPLEMENTED
 Content-type: text/html
 
 Sorry, that method is not implemented on this server.

@@ -1,6 +1,6 @@
 #!/usr/bin/ruby -w
 #
-# Web Server written in Ruby
+# dauntel - Web Server written in Ruby
 #
 # Copyright &copy 2002 Rob Helmer <robert@namodn.com>, you may accept it under 
 # the terms of the GPL ( http://gnu.org/licenses/gpl.txt )
@@ -20,14 +20,16 @@
 
 require 'socket'
 require 'lib/webserver.rb'
-server = TCPServer.new(config('hostname'), config('port'))
-logger("started webserver on #{config('hostname')} port #{config('port')}")
+ws = WebServer.new()
+tcp = TCPServer.new( ws.config('hostname'), ws.config('port'))
+
+ws.logger("started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
 
 #
 # This while loop handles incoming HTTP requests from the user agent.
 # The loop is alive as long as we're able to listen..
 #
-while (session = server.accept)
+while (session = tcp.accept)
 	#
 	# grab incoming requests into incoming string
 	#
@@ -36,7 +38,7 @@ while (session = server.accept)
 	#
 	# Log the whole incoming request
 	#
-	logger("Request: #{incoming}")
+	ws.logger("Request: #{incoming}")
 
 	#
 	# split incoming by space into request array
@@ -59,21 +61,21 @@ while (session = server.accept)
 		# If the getURL method returns something for this URL,
 		# then we know how to handle it
 		#
-		if getURL(url) 
-			serve(url,session)
+		if ws.getURL(url) 
+			ws.serve(url,session)
 		else
 		#
 		# This isn't an URL that we can handle, return a "file
 		# not found" message
 		#
-			serve('notFound',session)
+			ws.serve('notFound',session)
 		end
 	else
 		#
 		# Only the GET method is supported, anything else
 		# is not implemented
 		#
-			serve('notImplemented',session)
+			ws.serve('notImplemented',session)
 	end
 	session.close
 end

@@ -1,4 +1,4 @@
-rrw (Rob's Ruby Webserver) v0.1
+dauntel v0.2
 -------------------------------
 
 Hello,
@@ -23,12 +23,12 @@ It supports the following HTTP requests :
 500/OK
 501/NOT IMPLEMENTED
 
-rrw only supports sending "text/html".
+dauntel only supports sending "text/html".
 
 If the URL the user is attempting to get is a directory within
-the defined docroot, rrw will look for a file named "index.html".
+the defined docroot, dauntel will look for a file named "index.html".
 
-If a file is found, rrw sends back :
+If a file is found, dauntel sends back :
 
 --
 
@@ -40,7 +40,7 @@ Content-type: text/html
 followed by the content of the file.
 
 If the directory or filename is not found, or if no index.html
-exists rrw will send back :
+exists dauntel will send back :
 
 --
 
@@ -51,7 +51,7 @@ Sorry, that file was not found on this server.
 
 --
 
-Finally, if the user attempts to send any request except GET, rrw will
+Finally, if the user attempts to send any request except GET, dauntel will
 send :
 
 --

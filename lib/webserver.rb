@@ -39,13 +39,12 @@ def start()
 	#
 	
 	while (tcp)
-	
+
 		session = tcp.accept
-	
+
 		#
 		# grab incoming requests into incoming string
 		#
-	
 		incoming = session.gets
 	
 		#

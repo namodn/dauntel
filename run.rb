@@ -23,7 +23,7 @@ require 'lib/webserver.rb'
 ws = WebServer.new()
 tcp = TCPServer.new(ws.config('hostname'), ws.config('port'))
 
-ws.logger("started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
+ws.logger('access', "started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
 
 #
 # This while loop handles incoming HTTP requests from the user agent.
@@ -33,12 +33,14 @@ while (session = tcp.accept)
 	#
 	# grab incoming requests into incoming string
 	#
+
 	incoming = session.gets
 
 	#
 	# Log the whole incoming request
 	#
-	ws.logger("Request: #{incoming}")
+
+	ws.logger('debug', "Request: #{incoming}")
 
 	#
 	# split incoming by space into request array

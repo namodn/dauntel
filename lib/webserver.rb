@@ -33,8 +33,8 @@ end
 #
 # logger method - this handles logging incoming HTTP requests
 #
-def logger(log)
-	puts "#{log}"
+def logger(severity, log)
+	puts "#{severity}: #{log}"
 end
 
 #
@@ -122,6 +122,8 @@ def serve(url, status, session)
 	if status == 'notFound'
 		session.print header('HTTP 1.1 404/NOT FOUND','text/html')
 
+		logger('error', "Returned #{url}")
+
 		if File.exists?"#{@documentRoot}/missing.html" 
 			session.print getURL("/missing.html")
 		else
@@ -145,13 +147,13 @@ def serve(url, status, session)
 	elsif status == 'ok'
 		session.print header('HTTP 1.1 500/OK','text/html')
 		session.print getURL(url)
-		logger("Returned #{url}")
+		logger('access', "Returned #{url}")
 
 	#
 	# If status is unrecognized, log an error and ignore do nothing
 	#
 	else
-		logger("status is unrecognized : #{status}")
+		logger('error', "status is unrecognized : #{status}")
 	end
 
 end

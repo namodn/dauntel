@@ -44,7 +44,18 @@ while (session = tcp.accept)
 	#
 	# split incoming by space into request array
 	#
+
 	request = incoming.split
+
+	#
+	# security check - don't allow ../ tricks
+	#
+
+	if ( request[1] =~ /\/\.\./ )
+		request[1] = '';
+	elsif ( request[1] =~ /\.\.\// )
+		request[1] = '';
+	end
 
 	#
 	# First part of an HTTP request is always the method,

@@ -1,0 +1,25 @@
+* Defined module types:    content, auth
+
+Module Type: Content
+--------------------
+
+ * If module is loaded, it registers itself as a 'content handler' for certain
+   extentions.
+   Examples:
+     - module 'cgi' would register itself as a content handler for '.cgi'.
+     - module 'dir' would register itself as a content handler for '/'.
+
+ * When webserver.rb is trying to get the requested file, it will check with 
+   the content hanlder. If no content type is registered with the file in 
+   question it will pass it on to mime types, and display the file.
+
+ * If the content type _is_ found for the filename in question, the module 
+   registered for that content type will generate the contents of what to 
+   display, and return it to the webserver (which will display it as is).
+   Examples:  
+     - thingy.cgi would mean the module 'cgi' would be executed to handle that 
+       file. It would execute the CGI and return the output.
+     - anything with a '/' at the end would mean the module 'dir' would be 
+       executed. It would return a listing of the directory.
+
+

@@ -11,9 +11,9 @@ end
 
 def loadConfig(configFile)
 	@hostname, @port, @documentRoot, @indexFiles, @mimeFile, 
-	@accessLog, @errorLog, @debugLog = 
+	@accessLog, @errorLog, @debugLog, @loadMod = 
 	'0', '8080', 'htdocs/', ['index.html', 'index.htm'], 'etc/mime.types', 
-	'log/access.log', 'log/error.log', 'log/debug.log'
+	'log/access.log', 'log/error.log', 'log/debug.log', []
 
 	config = open(configFile, "r+")
 
@@ -43,6 +43,8 @@ def loadConfig(configFile)
 				@errorLog = value
 			elsif key == 'debugLog'
 				@debugLog = value
+			elsif key == 'loadMod'
+				@loadMod = value.split(',')
 			end
 
 		end
@@ -68,6 +70,8 @@ def config(key)
 		return @errorLog
 	elsif key == 'debugLog'
 		return @debugLog
+	elsif key == 'loadMod'
+		return @loadMod
 	end
 end
 
@@ -225,7 +229,7 @@ end
 #
 def setHeader(session, filename)
 	mimeType = "text/html"
-	fileExt = getFileExtention(filename)
+	fileExt = getExtention(filename)
 
 	file = open(@mimeFile, "r+")
 
@@ -258,7 +262,7 @@ def setHeader(session, filename)
 	session.print header('HTTP 1.1 500/OK', mimeType)
 end
 
-def getFileExtention(filename)
+def getExtention(filename)
 	fileElements = filename.split(/\./)
 	return fileElements[fileElements.size - 1] 
 end

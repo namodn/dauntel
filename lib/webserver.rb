@@ -80,7 +80,17 @@ end
 # agent
 #
 def header(errorCode, contentType)
-	result = "HTTP/1.1 #{errorCode}\r\nContent-type: #{contentType}\r\n\r\n"
+	result = "HTTP/1.1 #{errorCode}\r\n"
+#	result += "Date: Sat, 23 Nov 2002 09:03:15 GMT\r\n"
+	result += "Server: Dauntel/0.4 (Unix) Debian/GNU\r\n"
+#	result += "Last-Modified: Tue, 30 Apr 2002 02:11:15 GMT\r\n"
+#	result += "ETag: c02f-13be-3ccdfd4\r\n"
+#	result += "Accept-Ranges: bytes\r\n"
+#	result += "Content-Length: 5054\r\n"
+	result += "Keep-Alive: timeout=15, max=100\r\n"
+	result += "Connection: Keep-Alive\r\n"
+	result += "Content-type: #{contentType}; charset=iso-8859-1\r\n"
+	result += "\r\n"
 	return result
 end
 

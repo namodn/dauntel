@@ -4,8 +4,8 @@ Dauntel v0.3
 This release is rather barebones. A list of items to get
 to 1.0 is in doc/TODO
 
-Make sure you have Ruby installed ( I'm using v1.4.3 ) and start
-the server using the "run.rb" script.
+Make sure you have Ruby installed ( I'm using v1.6.7 ) and start
+the server using the "dauntel.rb" script.
 
 Configuration takes place in etc/config.rb
 

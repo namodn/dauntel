@@ -5,6 +5,7 @@ class WebServer
 #
 def initialize
         require 'config.rb'
+	@version = '0.2'
 	@hostname, @port, @documentRoot, @indexes = loadConfig()
 end
 
@@ -114,12 +115,26 @@ end
 # serve method - this handles interaction with the user agent
 #
 def serve(url,session)
+
 	#
 	# If the word "notFound" was passed, we don't have it
 	#
 	if url == 'notFound'
+		#
+		# get requested URL
+		#
+	        badurl = session.gets.split[1]
+
 		session.print header('HTTP 1.1 404/NOT FOUND','text/html')
-		session.print 'Sorry, that file was not found on this server.'
+
+		if File.exists?"#{@documentRoot}/missing.html" 
+			session.print getURL("/missing.html")
+		else
+			session.print '<html><head><title>404 Not Found</title>'
+			session.print '</head><body><h1>Not Found!</h1>'
+			session.print "<p>The URL #{badurl} was not found on this server.</p>"
+			session.print "<hr /><address>dante http server v#{@version} - #{@hostname} #{@port}</address></body></html>"
+		end
 
 	#
 	# If the word "notImplemented" was passed, we can't do it

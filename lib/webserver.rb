@@ -112,6 +112,14 @@ def logger(severity, log)
 end
 
 #
+# Save log in common log format
+# http://www.w3.org/Daemon/User/Config/Logging.html#common-logfile-format
+#
+def clf_logger(ip_addr, url)
+	logger('access', "#{ip_addr} - - [DD/MMM/YYYY:HH:MM:SS -0800] \"GET #{url} 200\" \"User Agent\"")
+end
+
+#
 # getURL method - this handles incoming GET requests
 #
 def getURL(url)
@@ -135,6 +143,7 @@ def fileReader(filename)
 
 		#
 		# if it's a file, open it!
+		# 
 		#
 		if fileType == 'file'
 			file = open(fullFilename, "r+")
@@ -223,7 +232,7 @@ def serve(url, status, session)
 	elsif status == 'ok'
 		setHeader(session, "#{@documentRoot}/#{url}")
 		session.print getURL(url)
-		logger('access', "200 OK #{url} from #{ip_addr}")
+		clf_logger(ip_addr,url)
 
 	#
 	# If status is unrecognized, log an error and ignore do nothing

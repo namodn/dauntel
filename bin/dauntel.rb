@@ -24,5 +24,3 @@ require 'lib/webserver.rb'
 ws = WebServer.new()
 ws.start()
 
-while (true)
-end

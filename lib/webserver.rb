@@ -115,7 +115,7 @@ def fileReader(filename)
 	#
 	# put the documentRoot and the filename together
 	#
-	fullFilename = @documentRoot
+	fullFilename = "#{@documentRoot}#{filename}"
 
 	begin
 		#

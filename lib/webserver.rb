@@ -27,7 +27,6 @@ def loadConfig(configFile)
 
 			key, value = line.split('\W+', 2)
 
-			print "key #{key}, value -#{value}-\n"
 			if key == 'hostname'
 				@hostname = value
 			elsif key == 'port'
@@ -235,7 +234,7 @@ def setHeader(session, filename)
 		file.each_line do |line|
 			if line =~ /^$/
 				next
-			elsif line =~ /^\w*\#/
+			elsif line =~ /^\W*\#/
 				next
 			end
 

@@ -21,6 +21,12 @@
 
 require 'lib/webserver.rb'
 
-ws = WebServer.new()
-ws.start()
+thread = Thread.new {
+	ws = WebServer.new()
+	ws.start()
+}
 
+thread.run
+
+while (true)
+end

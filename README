@@ -1,0 +1,71 @@
+rrw (Rob's Ruby Webserver) v0.1
+-------------------------------
+
+Hello,
+
+
+This release is rather barebones, as I'm just using it to learn
+Ruby.
+
+Configuration takes place at the top of lib/webserver.rb, in the
+"config" class.
+
+Make sure you have Ruby installed ( I'm using v1.4.3 ) and start
+the server using the "run.rb" script.
+
+It supports the following HTTP request :
+
+GET 
+
+It supports the following HTTP requests :
+
+404/NOT FOUND
+500/OK
+501/NOT IMPLEMENTED
+
+rrw only supports sending "text/html".
+
+If the URL the user is attempting to get is a directory within
+the defined docroot, rrw will look for a file named "index.html".
+
+If a file is found, rrw sends back :
+
+--
+
+HTTP 1.1 500/OK 
+Content-type: text/html 
+
+--
+
+followed by the content of the file.
+
+If the directory or filename is not found, or if no index.html
+exists rrw will send back :
+
+--
+
+HTTP 1.1 404/NOT FOUND
+Content-type: text/html
+
+Sorry, that file was not found on this server.
+
+--
+
+Finally, if the user attempts to send any request except GET, rrw will
+send :
+
+--
+
+HTTP/1.1 HTTP 1.1 501/NOT IMPLEMENTED
+Content-type: text/html
+
+Sorry, that method is not implemented on this server.
+
+--
+
+
+That's it for now! :)
+
+
+-------------------------------
+Questions, comments, patches, etc : robert@namodn.com

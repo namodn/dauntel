@@ -51,10 +51,10 @@ while (session = tcp.accept)
 	# security check - don't allow ../ tricks
 	#
 
-	if ( request[1] =~ /\/\.\./ )
-		request[1] = '';
-	elsif ( request[1] =~ /\.\.\// )
-		request[1] = '';
+	if ( request[1] =~ /\/\.\./ ) || ( request[1] =~ /\.\.\// )
+		ws.serve('notFound',session)
+		session.close
+		next
 	end
 
 	#

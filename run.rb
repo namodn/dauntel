@@ -23,7 +23,7 @@ require 'lib/webserver.rb'
 ws = WebServer.new()
 tcp = TCPServer.new(ws.config('hostname'), ws.config('port'))
 
-ws.logger('access', "started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
+ws.logger('debug', "started webserver on #{ws.config('hostname')} port #{ws.config('port')}")
 
 #
 # This while loop handles incoming HTTP requests from the user agent.

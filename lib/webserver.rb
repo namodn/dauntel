@@ -1,13 +1,20 @@
+class WebServer
+
 #
 # config method, define all configurable settings
 #
+def initialize
+        require 'config.rb'
+	@hostname, @port, @documentRoot = loadConfig()
+end
+
 def config(key)
 	if key == 'hostname'
-		return 'namodn.com'
+		return @hostname
 	elsif key == 'port'
-		return '8080'
+		return @port
 	elsif key == 'documentRoot'
-		return '/home/robert/src/rrw/htdocs'
+		return @documentRoot
 	end
 end
 
@@ -117,3 +124,7 @@ def serve(url,session)
 	end
 	logger("Returned #{url}")
 end
+
+
+end  # end class WebServer
+

@@ -4,9 +4,9 @@ class WebServer
 # config method, define all configurable settings
 #
 def initialize
-        require 'config.rb'
+        require 'etc/config.rb'
 	@version = '0.2'
-	@hostname, @port, @documentRoot, @indexes, @mimeFile= loadConfig()
+	@hostname, @port, @documentRoot, @indexes, @mimeFile, @accessLog, @errorLog, @debugLog = loadConfig()
 end
 
 def config(key)
@@ -18,6 +18,12 @@ def config(key)
 		return @documentRoot
 	elsif key == 'indexes'
 		return @indexes
+	elsif key == 'accessLog'
+		return @accessLog
+	elsif key == 'errorLog'
+		return @errorLog
+	elsif key == 'debugLog'
+		return @debugLog
 	end
 end
 
@@ -34,7 +40,17 @@ end
 # logger method - this handles logging incoming HTTP requests
 #
 def logger(severity, log)
-	puts "#{severity}: #{log}"
+	if severity == 'access'
+		fullFilename = "#{config('accessLog')}"
+	elsif severity == 'error'
+		fullFilename = "#{config('errorLog')}"
+	elsif severity == 'debug'
+		fullFilename = "#{config('debugLog')}"
+	end
+
+	file = open(fullFilename, "a")
+	file.puts "#{log}"
+	file.close
 end
 
 #
@@ -105,6 +121,7 @@ def fileReader(filename)
 	# Read all lines and return them.
 	#
 	result = file.readlines
+	file.close
 	return result
 end
 

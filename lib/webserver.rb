@@ -116,13 +116,16 @@ end
 #
 def serve(url, status, session)
 
+	addr = session.addr
+	ip_addr = addr[3]
+
 	#
 	# If the word "notFound" was passed, we don't have it
 	#
 	if status == 'notFound'
 		session.print header('HTTP 1.1 404/NOT FOUND','text/html')
 
-		logger('error', "Returned #{url}")
+		logger('error', "404 NOT FOUND #{url}, #{ip_addr}")
 
 		if File.exists?"#{@documentRoot}/missing.html" 
 			session.print getURL("/missing.html")
@@ -139,6 +142,7 @@ def serve(url, status, session)
 	elsif status == 'notImplemented'
 		session.print header('HTTP 1.1 501/NOT IMPLEMENTED','text/html')
 		session.print 'Sorry, that method is not implemented on this server.'
+		logger('error', "501 NOT IMPLEMENTED Returned #{url} from #{ip_addr}")
 	#
 	#
 	# If status is ok, we've got it. Use our reference to the
@@ -147,7 +151,7 @@ def serve(url, status, session)
 	elsif status == 'ok'
 		session.print header('HTTP 1.1 500/OK','text/html')
 		session.print getURL(url)
-		logger('access', "Returned #{url}")
+		logger('access', "500 OK #{url} from #{ip_addr}")
 
 	#
 	# If status is unrecognized, log an error and ignore do nothing
